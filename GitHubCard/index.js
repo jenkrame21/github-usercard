@@ -1,8 +1,22 @@
+import axios from 'axios';
+
 /*
   STEP 1: using axios, send a GET request to the following URL
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
+
+// axios
+//   .get('https://api.github.com/users/jenkrame21')
+//   .then((userData) => {
+//     console.log(userData.data);
+//   })
+//   .catch((boo) => {
+//     console.log(boo);
+//   })
+//   .finally(() => {
+//     console.log('Done!')
+//   });
 
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
@@ -17,6 +31,71 @@
     and append the returned markup to the DOM as a child of .cards
 */
 
+const fullOfCards = document.querySelector('.cards');
+
+function cardMaker(data){
+
+  // Elements Created
+  const cardBox = document.createElement('div');
+  const avatar = document.createElement('img');
+  const info = document.createElement('div');
+  const userName = document.createElement('h3');
+  const userUserName = document.createElement('p');
+  const userLocation = document.createElement('p');
+  const userProfile = document.createElement('p');
+  const userGitHubURL = document.createElement('a');
+  const userFollowers = document.createElement('p');
+  const userFollowing = document.createElement('p');
+  const userBio = document.createElement('p');
+
+  // Classes Named
+  cardBox.classList.add('card');
+  avatar.classList.add('me-img');
+  info.classList.add('card-info');
+  userName.classList.add('name');
+  userUserName.classList.add('username');
+
+  // Sources Linked
+  avatar.src = data.avatar_url;
+  userGitHubURL.src = data.html_url;
+
+  // Appends Applied
+  cardBox.appendChild(avatar);
+  cardBox.appendChild(info);
+  info.appendChild(userName);
+  info.appendChild(userUserName);
+  info.appendChild(userLocation);
+  info.appendChild(userProfile);
+  info.appendChild(userGitHubURL);
+  info.appendChild(userFollowers);
+  info.appendChild(userFollowing);
+  info.appendChild(userBio);
+
+  // Content Applied
+  userName.textContent = data.name;
+  userUserName.textContent = data.login;
+  userLocation.textContent = `Location: ${data.location}`;
+  userProfile.textContent = `Profile: `;
+  userGitHubURL.textContent = data.html_url;
+  userGitHubURL.href = data.html_url;
+  userFollowers.textContent = `Followers:  ${data.followers}`;
+  userFollowing.textContent = `Following: ${data.following}`;
+  userBio.textContent = `Bio: ${data.bio}`;
+
+  return fullOfCards.appendChild(cardBox);
+
+}
+
+axios.get('https://api.github.com/users/jenkrame21')
+  .then(res => {
+    const data = res.data;
+    // debugger
+    cardMaker(data)
+  })
+  .catch(drama => {
+    console.log(drama)
+  })
+
 /*
   STEP 5: Now that you have your own card getting added to the DOM, either
     follow this link in your browser https://api.github.com/users/<Your github name>/followers,
@@ -28,7 +107,26 @@
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+// Followers
+axios
+  .get('https://api.github.com/users/jenkrame21/followers')
+  .then((res) => {
+    console.log(res.data)
+    const followerData = res.data
+    followerData.forEach(data => {
+      const followerContainer = cardMaker(data);
+      fullOfCards.append(followerContainer);
+      
+    })
+  })
+  .catch((boo) => {
+    console.log(boo)
+  })
+  .finally(() => {
+    console.log('Got Follower data~')
+  });
+
+// const followersArray = [];
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
