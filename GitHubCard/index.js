@@ -66,7 +66,7 @@ function cardMaker(data){
   info.appendChild(userUserName);
   info.appendChild(userLocation);
   info.appendChild(userProfile);
-  userProfile.appendChild(userGitHubURL);
+  info.appendChild(userGitHubURL);
   info.appendChild(userFollowers);
   info.appendChild(userFollowing);
   info.appendChild(userBio);
@@ -76,9 +76,10 @@ function cardMaker(data){
   userUserName.textContent = data.login;
   userLocation.textContent = `Location: ${data.location}`;
   userProfile.textContent = `Profile: `;
-  userGitHubURL.textContent = `User GitHub Link: ${data.html_url}`
-  userFollowers.textContent = `Followers:  ${data.followers}`
-  userFollowing.textContent = `Following: ${data.following}`
+  userGitHubURL.textContent = data.html_url;
+  userGitHubURL.href = data.html_url;
+  userFollowers.textContent = `Followers:  ${data.followers}`;
+  userFollowing.textContent = `Following: ${data.following}`;
   userBio.textContent = `Bio: ${data.bio}`;
 
   return fullOfCards.appendChild(cardBox);
@@ -115,6 +116,7 @@ axios
     followerData.forEach(data => {
       const followerContainer = cardMaker(data);
       fullOfCards.append(followerContainer);
+      
     })
   })
   .catch((boo) => {
@@ -122,7 +124,7 @@ axios
   })
   .finally(() => {
     console.log('Got Follower data~')
-  })
+  });
 
 // const followersArray = [];
 
