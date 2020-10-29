@@ -6,17 +6,17 @@ import axios from 'axios';
     https://api.github.com/users/<your name>
 */
 
-axios
-  .get('https://api.github.com/users/jenkrame21')
-  .then((myData) => {
-    console.log(myData.data);
-  })
-  .catch((boo) => {
-    console.log(boo);
-  })
-  .finally(() => {
-    console.log('Done!')
-  });
+// axios
+//   .get('https://api.github.com/users/jenkrame21')
+//   .then((userData) => {
+//     console.log(userData.data);
+//   })
+//   .catch((boo) => {
+//     console.log(boo);
+//   })
+//   .finally(() => {
+//     console.log('Done!')
+//   });
 
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
@@ -39,47 +39,47 @@ function cardMaker(data){
   const cardBox = document.createElement('div');
   const avatar = document.createElement('img');
   const info = document.createElement('div');
-  const myName = document.createElement('h3');
-  const myUserName = document.createElement('p');
-  const myLocation = document.createElement('p');
-  const myProfile = document.createElement('p');
-  const myGitHubURL = document.createElement('a');
-  const myFollowers = document.createElement('p');
-  const myFollowing = document.createElement('p');
-  const aboutMe = document.createElement('p');
+  const userName = document.createElement('h3');
+  const userUserName = document.createElement('p');
+  const userLocation = document.createElement('p');
+  const userProfile = document.createElement('p');
+  const userGitHubURL = document.createElement('a');
+  const userFollowers = document.createElement('p');
+  const userFollowing = document.createElement('p');
+  const userBio = document.createElement('p');
 
   // Classes Named
   cardBox.classList.add('card');
   avatar.classList.add('me-img');
   info.classList.add('card-info');
-  myName.classList.add('name');
-  myUserName.classList.add('username');
+  userName.classList.add('name');
+  userUserName.classList.add('username');
 
   // Sources Linked
   avatar.src = data.avatar_url;
-  myGitHubURL.src = data.html_url;
-  console.log(myGitHubURL)
+  userGitHubURL.src = data.html_url;
 
   // Appends Applied
   cardBox.appendChild(avatar);
   cardBox.appendChild(info);
-  info.appendChild(myName);
-  info.appendChild(myUserName);
-  info.appendChild(myLocation);
-  info.appendChild(myProfile);
-  myProfile.appendChild(myGitHubURL);
-  info.appendChild(myFollowers);
-  info.appendChild(myFollowing);
-  info.appendChild(aboutMe);
+  info.appendChild(userName);
+  info.appendChild(userUserName);
+  info.appendChild(userLocation);
+  info.appendChild(userProfile);
+  userProfile.appendChild(userGitHubURL);
+  info.appendChild(userFollowers);
+  info.appendChild(userFollowing);
+  info.appendChild(userBio);
 
   // Content Applied
-  myName.textContent = data.name;
-  myUserName.textContent = data.login;
-  myLocation.textContent = data.location;
-  myProfile.textContent = 'Profile: ';
-  myGitHubURL.textContent = `My GitHub Link: ${data.html_url}`
-  myFollowers.textContent = `My Followers:  ${data.followers}`
-  aboutMe.textContent = data.bio;
+  userName.textContent = data.name;
+  userUserName.textContent = data.login;
+  userLocation.textContent = `Location: ${data.location}`;
+  userProfile.textContent = `Profile: `;
+  userGitHubURL.textContent = `User GitHub Link: ${data.html_url}`
+  userFollowers.textContent = `Followers:  ${data.followers}`
+  userFollowing.textContent = `Following: ${data.following}`
+  userBio.textContent = `Bio: ${data.bio}`;
 
   return fullOfCards.appendChild(cardBox);
 
@@ -106,7 +106,25 @@ axios.get('https://api.github.com/users/jenkrame21')
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+// Followers
+axios
+  .get('https://api.github.com/users/jenkrame21/followers')
+  .then((res) => {
+    console.log(res.data)
+    const followerData = res.data
+    followerData.forEach(data => {
+      const followerContainer = cardMaker(data);
+      fullOfCards.append(followerContainer);
+    })
+  })
+  .catch((boo) => {
+    console.log(boo)
+  })
+  .finally(() => {
+    console.log('Got Follower data~')
+  })
+
+// const followersArray = [];
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
